@@ -1,0 +1,48 @@
+<link rel="stylesheet" href="/stylesheets/login.css">
+<div class="section">
+    <div class="container">
+        <div class="row full-height justify-content-center">
+            <div class="col-12 text-center align-self-center py-5">
+                <div class="section pb-5 pt-5 pt-sm-2 text-center">
+                    <div class="card-3d-wrap mx-auto">
+                        <div class="card-3d-wrapper">
+                            <div class="card-front">
+                                <div class="center-wrap">
+                                    <div class="section text-center">
+                                        <form action="Javascript:void(0)" method="post" id="updateUser">
+                                            <input type="hidden" name="_csrf" value="{{csrfToken}}" id="csrf">
+                                            <h4 class="mb-3 pb-3">Forgot Password</h4>
+                                            <div class="form-group mt-2">
+                                                <input type="text" class="form-style" id="username" value = {{username}} readonly>
+                                                <i class="input-icon uil uil-user"></i>
+                                            </div>
+                                            <div class="form-group mt-2">
+                                                <input type="text" class="form-style" id="email" value = {{email}} readonly>
+                                                <i class="input-icon uil uil-envelope-star"></i>
+                                            </div>
+                                            <div class="form-group mt-2">
+                                                <input type="password" class="form-style" placeholder="Current password" id="curpass" required>
+                                                <i class="input-icon uil uil-lock-alt"></i>
+                                            </div>
+                                            <div class="form-group mt-2">
+                                                <input type="password" class="form-style" placeholder="Password" required id="password1">
+                                                <i class="input-icon uil uil-lock-alt"></i>
+                                            </div>
+                                            <div class="form-group mt-2">
+                                                <input type="password" class="form-style"
+                                                    placeholder="Confirm Password" id="password2">
+                                                <i class="input-icon uil uil-lock-alt"></i>
+                                            </div>
+                                            <button class="btn mt-3" type="submit">Confirm</a>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

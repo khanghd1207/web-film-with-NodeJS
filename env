@@ -1,0 +1,6 @@
+MONGO_URI='mongodb://127.0.0.1:27017/nodejs'
+JWT_SECRET='FinalProjectNodeJS'
+GOOGLE_CLIENT_ID='801588531906-hq6fagiasd0d7ge0jtlpkdrnmn5s5qtn.apps.googleusercontent.com'
+GOOGLE_CLIENT_SECRET='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'
+FACEBOOK_APP_ID='1217805902200266'
+FACEBOOK_APP_SECRET='a47c0fb7bd70b3a3cee051ebf4bc2607'

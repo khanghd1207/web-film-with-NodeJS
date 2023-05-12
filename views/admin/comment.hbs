@@ -1,0 +1,143 @@
+
+{{#if list_films}}
+<table class="table table-hover table-dark" id="table_gener">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">A number of comments</th>
+        </tr>
+    </thead>
+    <tbody style="overflow: auto; max-height: 500px;">
+        {{#each list_films}}
+        <tr>
+            <th scope="row">
+                {{!-- xem chi tiet -> click --}}
+                <p class="mb-0 mt-2"><a href="/admin/cmt/{{this.id}}" class="link">{{this.name}}</a></p>
+            </th>
+            <td>
+                <strong class="badge badge-primary badge-pill">{{this.cmt.length}}</strong>
+            </td>
+
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<div style="color: white; text-align: center">
+    {{#each (range 1 length)}}
+    <a href="/admin/cmt?page={{this}}" style="padding: 0px 8px;">{{this}}</a>
+    {{/each}}
+
+</div>
+{{/if}}
+{{#if film}}
+<h4 class="title-name" style="font-size: 2em; color: antiquewhite; text-align: center;">Phim {{film.name}}: <strong
+        class="badge badge-primary badge-pill">{{film.cmt.length}}</strong>
+</h4>
+{{#when film.cmt.length 'eq' 0}}
+<h4 class="title-name" style="font-size: 1em; color: antiquewhite; text-align: center; margin: 30px">Chưa có bình luận
+    nào
+</h4>
+{{/when}}
+{{#when film.cmt.length 'noteq' 0}}
+<table class="table table-hover table-dark" id="table_gener">
+    <thead>
+        <tr>
+            <th scope="col">Username</th>
+            <th>Content</th>
+            <th>Time</th>
+            <th>Options</th>
+        </tr>
+    </thead>
+    <tbody style="overflow: auto; max-height: 500px;">
+        {{#each ../film.cmt}}
+        <tr>
+            <th scope="row">
+                <div>{{this.username}}</div>
+            </th>
+            <td>
+                <div name="content">{{this.content}}</div>
+            </td>
+            <td>
+                <div>{{this.time}}</div>
+            </td>
+            <td>
+                <button class="btn btn-danger btn-delete-cmt" type="button" idCmt="{{this._id}}"
+                    idFilm="{{../../film.id}}" content="{{this.content}}">Delete</button>
+            </td>
+
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{/when}}
+{{/if}}
+<!-- Modal -->
+<div class="modal fade" id="deleteModelCmt" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Xác nhận xóa?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="contentDeleteCmt">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" id="deleteCmt">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function notice(type, css, msg) {
+        this.type = type;
+        this.css = css;
+        this.msg = msg;
+    }
+    function showToast(t) {
+        toastr.options.positionClass = t.css;
+        toastr[t.type](t.msg);
+    }
+    toastr.options.positionClass = "toast-top-right";
+    toastr.options.extendedTimeOut = 1000;
+    toastr.options.timeOut = 1000;
+    toastr.options.fadeOut = 250;
+    toastr.options.fadeIn = 250;
+    //delete cmt
+    $(document).on('click', '.btn-delete-cmt', function () {
+        let content = $(this).closest('tr').find('div[name="content"]').html()
+        let idCmt = $(this).attr('idCmt')
+        alert(idCmt)
+        let idFilm = $(this).attr('idFilm')
+        alert(idFilm)
+        $('#contentDeleteCmt').html(`Nội dung comment: <b>${content}</b>`)
+        $('#deleteCmt').attr('idCmt', idCmt)
+        $('#deleteCmt').attr('idFilm', idFilm)
+        $('#deleteModelCmt').modal('toggle')
+    })
+    $(document).on('click', '#deleteCmt', () => {
+        let idCmt = $('#deleteCmt').attr('idCmt')
+        let idFilm = $('#deleteCmt').attr('idFilm')
+        $.ajax({
+            url: '/admin/cmt',
+            type: "DELETE",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            headers: {
+                "X-CSRF-Token": $("#csrf").val(),
+            },
+            data: JSON.stringify({ idCmt: idCmt, idFilm: idFilm }),
+            success: function (data) {
+                showToast(new notice("success", "toast-top-right", data.msg))
+                window.location.reload()
+            },
+            error: function (data) {
+                showToast(new notice("error", "toast-top-right", data.responseJSON.err))
+            }
+        })
+    })
+
+</script>

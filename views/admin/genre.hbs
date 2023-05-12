@@ -1,0 +1,57 @@
+<table class="table table-hover table-dark" id="table_gener">
+    <thead>
+        <tr>
+            <th scope="col">Genres</th>
+            <th scope="col">Options</th>
+        </tr>
+    </thead>
+    <tbody style="overflow: auto; max-height: 500px;">
+        {{#each genres}}
+        <tr>
+            <th scope="row">
+                <form id="form-{{@index}}" class="formEditGenre" action="javascript:void(0)" method="post">
+                    <input type="text" name="genre" readonly value="{{this}}">
+                </form>
+            </th>
+            <td>
+                <button class="btn btn-warning btn-edit" type="button">Edit</button>
+                <button class="btn btn-primary btn-submit" type="button" hidden value="{{this}}">Send</button>
+                |
+                <button class="btn btn-danger btn-delete" type="button">Delete</button>
+            </td>
+
+        </tr>
+        {{/each}}
+
+        {{!-- <tr>
+            <th colspan="2">
+                <form action="javascript:void(0)" method="post" id="formAddGenre">
+                    <input type="text" name="genre" required id="new_genre"><br><br>
+                    <button class="btn btn-success" type="submit">Add Genre</button>
+                </form>
+            </th>
+            {{!-- <td>a</td> --}}
+        </tr> --}}
+    </tbody>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Xác nhận xóa?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="contentDelete">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" id="delete">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>

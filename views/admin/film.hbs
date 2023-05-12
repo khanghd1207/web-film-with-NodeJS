@@ -1,0 +1,261 @@
+{{#if list_films}}
+<table class="table table-hover table-dark" id="table_gener">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each list_films}}
+        <tr>
+            <th scope="row">{{{this.id}}}</th>
+            <td>{{{this.name}}}</td>
+            <td>
+                <!-- Call to action buttons -->
+                <ul class="list-inline m-0">
+
+                    <li class="list-inline-item">
+                        <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip"
+                            data-placement="top" title="Edit" id="editFilm" value="{{this.id}}"><i
+                                class="fa fa-edit"></i></button>
+                    </li>
+
+                    <li class="list-inline-item">
+                        <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip"
+                            data-placement="top" title="Delete" id="delFilm"><i class="fa fa-trash"></i></button>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{!-- <li class="list-inline-item">
+    <button class="btn btn-primary btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top"
+        title="Add" id=""><i class="fa fa-table"></i></button>
+</li> --}}
+<div style="color: white; text-align: center">
+    {{#each (range 1 length)}}
+    <a href="/admin?page={{this}}" style="padding: 0px 8px;">{{this}}</a>
+    {{/each}}
+
+</div>
+{{/if}}
+{{!-- model edit update --}}
+<div class="modal fade" id="modalEditFilm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="Javascript:void(0)" id="formUpdateFilm" method="POST">
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="editName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Actors:</label>
+                        <input type="text" class="form-control" id="editActor" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Direction:</label>
+                        <input type="text" class="form-control" id="editDirec" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Description:</label>
+                        <textarea class="form-control" id="editDesc" rows="4" cols="50" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Image:</label>
+                        <input type="file" class="form-control" id="editImg"
+                            onchange="document.getElementById('img').src = window.URL.createObjectURL(this.files[0])"
+                            required>
+                        <img src="" alt="" class="card-image" id="img" height="300px" style="text-align: center;">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Source:</label>
+                        <input type="text" class="form-control" id="editSrc" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Age:</label>
+                        <input type="number" class="form-control" id="editAge" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Year production:</label>
+                        <input type="number" class="form-control" id="editYear" required>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal delete-->
+<div class="modal fade" id="deleteModelCmt" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Xác nhận xóa?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="contentDeleteCmt">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" id="deleteCmt">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function notice(type, css, msg) {
+        this.type = type;
+        this.css = css;
+        this.msg = msg;
+    }
+    function showToast(t) {
+        toastr.options.positionClass = t.css;
+        toastr[t.type](t.msg);
+    }
+    toastr.options.positionClass = "toast-top-right";
+    toastr.options.extendedTimeOut = 1000;
+    toastr.options.timeOut = 1000;
+    toastr.options.fadeOut = 250;
+    toastr.options.fadeIn = 250;
+    //edit film
+    $(document).on('click', '#editFilm', function () {
+        let id = $(this).attr('value')
+        let film = null
+        $.ajax({
+            url: '/admin/' + id,
+            type: "GET",
+            dataType: "json",
+            async: false,
+            success: (data) => {
+                film = data.film
+            },
+            error: (data) => {
+                console.log(data.responseJSON.err)
+            }
+        })
+        if (film) {
+            $('#editName').val(film.name)
+            $('#editActor').val(film.actor)
+            $('#editDirec').val(film.director)
+            $('#editDesc').val(film.desc)
+            $('#img').attr('src', film.img)
+            $('#editSrc').val(film.source)
+            $('#editAge').val(film.age)
+            $('#editYear').val(film.year)
+            $('#modalEditFilm').modal('toggle')
+        }
+
+    })
+    //send edit
+    $(document).on('submit', '#formUpdateFilm', (event) => {
+        event.preventDefault(); // Ngăn chặn việc submit form thông qua phương thức HTTP truyền thống
+
+        let name = $('#editName').val();
+        let artor = $('#editActor').val();
+        let direc = $('#editDirec').val();
+        let desc = $('#editDesc').val();
+        let src = $('#editSrc').val();
+        let age = $('#editAge').val();
+        let year = $('#editYear').val();
+
+        let formData = new FormData();
+        formData.append('name', name);
+        formData.append('artor', artor);
+        formData.append('direc', direc);
+        formData.append('desc', desc);
+        formData.append('src', src);
+        formData.append('age', age);
+        formData.append('year', year);
+
+        let img = $('#editImg')[0].files[0]; // Lấy file ảnh từ input type=file
+        if (img) {
+            formData.append('img', img);
+        }
+
+        $.ajax({
+            url: '/admin',
+            type: 'PUT',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                console.log('Success:', response);
+            },
+            error: function (xhr, status, error) {
+                console.log('Error:', error);
+            }
+        });
+    });
+
+    $(document).on('click', '#editFilms', function () {
+        let id = $(this).attr('value')
+        $.ajax({
+            url: '/admin',
+            type: "DELETE",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            headers: {
+                "X-CSRF-Token": $("#csrf").val(),
+            },
+            data: JSON.stringify({ id: id }),
+            success: function (data) {
+                showToast(new notice("success", "toast-top-right", data.msg))
+                window.location.reload()
+            },
+            error: function (data) {
+                showToast(new notice("error", "toast-top-right", data.responseJSON.err))
+            }
+        })
+    })
+    //delete film
+    $(document).on('click', '#delbutt', function () {
+        let content = $(this).closest('tr').find('div[name="content"]').html()
+        let idCmt = $(this).attr('idCmt')
+        let idFilm = $(this).attr('idFilm')
+        $('#contentDeleteCmt').html(`Nội dung comment: <b>${content}</b>`)
+        $('#deleteCmt').attr('idCmt', idCmt)
+        $('#deleteCmt').attr('idFilm', idFilm)
+        $('#deleteModelCmt').modal('toggle')
+    })
+    $(document).on('click', '#deleteCmt', () => {
+        let idCmt = $('#deleteCmt').attr('idCmt')
+        let idFilm = $('#deleteCmt').attr('idFilm')
+        $.ajax({
+            url: '/admin/cmt',
+            type: "DELETE",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            headers: {
+                "X-CSRF-Token": $("#csrf").val(),
+            },
+            data: JSON.stringify({ idCmt: idCmt, idFilm: idFilm }),
+            success: function (data) {
+                showToast(new notice("success", "toast-top-right", data.msg))
+                window.location.reload()
+            },
+            error: function (data) {
+                showToast(new notice("error", "toast-top-right", data.responseJSON.err))
+            }
+        })
+    })
+
+</script>

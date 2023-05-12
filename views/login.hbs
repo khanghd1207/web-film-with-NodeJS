@@ -1,0 +1,158 @@
+<link rel="stylesheet" href="/stylesheets/login.css">
+<div class="section">
+    <div class="container">
+        <div class="row full-height justify-content-center">
+            <div class="col-12 text-center align-self-center py-5">
+                <div class="section pb-5 pt-5 pt-sm-2 text-center">
+                    <h6 class="mb-0 pb-3"><span>Log In </span><span>Sign Up</span></h6>
+                    <input class="checkbox" type="checkbox" id="reg-log" name="reg-log" />
+                    <label for="reg-log"></label>
+                    <div class="card-3d-wrap mx-auto">
+                        <div class="card-3d-wrapper">
+                            <div class="card-front">
+                                <div class="center-wrap">
+                                    <div class="section text-center">
+                                        <form action="Javascript:void(0)" method="post" id="loginUser">
+                                            <input type="hidden" name="_csrf" value="{{csrfToken}}" id="csrf">
+                                            <h4 class="mb-4 pb-3">Log In</h4>
+                                            <div class="form-group">
+                                                <input type="text" class="form-style" placeholder="Name" id="username"
+                                                    required>
+                                                <i class="input-icon uil uil-user"></i>
+                                            </div>
+                                            <div class="form-group mt-2">
+                                                <input type="password" class="form-style" placeholder="Password"
+                                                    id="password" required>
+                                                <i class="input-icon uil uil-lock-alt"></i>
+                                            </div>
+                                            {{!-- <div class="form-group" style="text-align: left">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="customCheck"
+                                                        name="example1">
+                                                    <label class="custom-control-label"
+                                                        for="customCheck">Remember</label>
+                                                </div>
+                                            </div> --}}
+                                            <button class="btn mt-4" type="submit" style="">Login</button>
+                                        </form>
+
+                                        <div style="display: flex; place-content: space-between;">
+                                            <p class="mb-0 mt-2"><a href="/forgot" class="link">Forgot your
+                                                    password?</a></p>
+                                            <p class="mb-0 mt-2"><a href="/home" class="link">Watch now?</a></p>
+                                        </div>
+                                        <div id="loginWith">
+                                            <div class="share">
+                                                <a href="/auth-facebook">
+                                                    <button class="btn1">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="30px"
+                                                            height="30px" viewBox="88.428 12.828 107.543 207.085"
+                                                            id="facebook" class="facebook">
+                                                            <path
+                                                                d="M158.232 219.912v-94.461h31.707l4.747-36.813h-36.454V65.134c0-10.658 2.96-17.922 18.245-17.922l19.494-.009V14.278c-3.373-.447-14.944-1.449-28.406-1.449-28.106 0-47.348 17.155-47.348 48.661v27.149H88.428v36.813h31.788v94.461l38.016-.001z">
+                                                            </path>
+                                                        </svg>
+                                                    </button>
+                                                </a>
+                                                <a href="/auth-google">
+                                                    <button class="btn2">
+                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                            viewBox="-380.2 274.7 65.7 65.8" id="google" class="google">
+                                                            <circle cx="-347.3" cy="307.6" r="32.9" fill="#e0e0e0">
+                                                            </circle>
+                                                            <circle cx="-347.3" cy="307.1" r="32.4" fill="#fff">
+                                                            </circle>
+                                                            <defs>
+                                                                <path id="a"
+                                                                    d="M-326.3 303.3h-20.5v8.5h11.8c-1.1 5.4-5.7 8.5-11.8 8.5-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4c-3.9-3.4-8.9-5.5-14.5-5.5-12.2 0-22 9.8-22 22s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z">
+                                                                </path>
+                                                            </defs>
+                                                            <clipPath id="b">
+                                                                <use overflow="visible" xlink:href="#a"></use>
+                                                            </clipPath>
+                                                            <path fill="#fbbc05" d="M-370.8 320.3v-26l17 13z"
+                                                                clip-path="url(#b)"></path>
+                                                            <defs>
+                                                                <path id="c"
+                                                                    d="M-326.3 303.3h-20.5v8.5h11.8c-1.1 5.4-5.7 8.5-11.8 8.5-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4c-3.9-3.4-8.9-5.5-14.5-5.5-12.2 0-22 9.8-22 22s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z">
+                                                                </path>
+                                                            </defs>
+                                                            <clipPath id="d">
+                                                                <use overflow="visible" xlink:href="#c"></use>
+                                                            </clipPath>
+                                                            <path fill="#ea4335"
+                                                                d="M-370.8 294.3l17 13 7-6.1 24-3.9v-14h-48z"
+                                                                clip-path="url(#d)"></path>
+                                                            <defs>
+                                                                <path id="e"
+                                                                    d="M-326.3 303.3h-20.5v8.5h11.8c-1.1 5.4-5.7 8.5-11.8 8.5-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4c-3.9-3.4-8.9-5.5-14.5-5.5-12.2 0-22 9.8-22 22s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z">
+                                                                </path>
+                                                            </defs>
+                                                            <clipPath id="f">
+                                                                <use overflow="visible" xlink:href="#e"></use>
+                                                            </clipPath>
+                                                            <path fill="#34a853"
+                                                                d="M-370.8 320.3l30-23 7.9 1 10.1-15v48h-48z"
+                                                                clip-path="url(#f)"></path>
+                                                            <g>
+                                                                <defs>
+                                                                    <path id="g"
+                                                                        d="M-326.3 303.3h-20.5v8.5h11.8c-1.1 5.4-5.7 8.5-11.8 8.5-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4c-3.9-3.4-8.9-5.5-14.5-5.5-12.2 0-22 9.8-22 22s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z">
+                                                                    </path>
+                                                                </defs>
+                                                                <clipPath id="h">
+                                                                    <use overflow="visible" xlink:href="#g"></use>
+                                                                </clipPath>
+                                                                <path fill="#4285f4" d="M-322.8 331.3l-31-24-4-3 35-10z"
+                                                                    clip-path="url(#h)"></path>
+                                                            </g>
+                                                        </svg>
+                                                    </button>
+                                                </a>
+                                            </div>
+                                            {{!-- <button class="btn mt-4" id="loginFB">Login with Facebook</button>
+                                            <button class="btn mt-4" id="loginGG">Login with Google</button> --}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-back">
+                                <div class="center-wrap">
+                                    <div class="section text-center">
+                                        <form action="Javascript:void(0)" method="post" id="registerUser">
+                                            <input type="hidden" name="_csrf" value="{{csrfToken}}" id="csrf">
+                                            <h4 class="mb-3 pb-3">Sign Up</h4>
+                                            <div class="form-group">
+                                                <input type="text" class="form-style" placeholder="User Name" required
+                                                    id="usernameRegister">
+                                                <i class="input-icon uil uil-user"></i>
+                                            </div>
+                                            <div class="form-group mt-2">
+                                                <input type="email" class="form-style" placeholder="Email" required
+                                                    id="emailRegister">
+                                                <i class="input-icon uil uil-at"></i>
+                                            </div>
+                                            <div class="form-group mt-2">
+                                                <input type="password" class="form-style" placeholder="Password"
+                                                    required id="pass1">
+                                                <i class="input-icon uil uil-lock-alt"></i>
+                                            </div>
+                                            <div class="form-group mt-2">
+                                                <input type="password" class="form-style" placeholder="Confirm Password"
+                                                    required id="pass2">
+                                                <i class="input-icon uil uil-lock-alt"></i>
+                                            </div>
+                                            <button class="btn mt-4" type="submit">Register</a>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

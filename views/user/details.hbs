@@ -1,0 +1,279 @@
+<link rel="stylesheet" href="../../stylesheets/card-film.css">
+<link rel="stylesheet" href="../../stylesheets/detail.css">
+<link rel="stylesheet" href="../../stylesheets/filter.css">
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <a href="/home"><img src="../../images/icon.png" alt="" width="50em" style="margin:0px 50px 0px 50px"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/home">Home</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/film" style="font-weight: bold; color: crimson">Films</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/favorite">Favorite</a>
+            </li>
+            {{#when user 'eq' undefined}}
+            <li class="nav-item">
+                <a class="nav-link" href="/login">Login Or Register</a>
+            </li>
+            {{/when}}
+            {{#if user}}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Account
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="background: rgb(198, 199, 210);">
+                    <a class="dropdown-item" href="/logout">Logout</a>
+                    {{#when user.provider 'eq' 'local'}}
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/update-account">Update information</a>
+                    {{/when}}
+                </div>
+            </li>
+            {{/if}}
+            {{#if user}}
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Welcome
+                    <b>{{user.username}}</b></a>
+            </li>
+            {{/if}}
+
+        </ul>
+        <form class="form-inline my-2 my-lg-0" action="/search" method="POST" id="searchFilm">
+            <input class="form-control mr-sm-2" id="search" name="search" type="search" placeholder="Search"
+                aria-label="Search" style="background: rgb(170, 172, 190);">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+<input type="hidden" name="_csrf" value="{{csrfToken}}" id="csrf">
+{{!-- film --}}
+<div style="color: white;">
+    <div id="name">{{film.name}}</div>
+    <div class="film-detail">
+        <iframe src="{{film.source}}" frameborder="0" allowfullscreen></iframe>
+        <div>
+            <div><b>Diễn viên: </b>{{film.actor}}</div>
+            <div><b>Đạo diễn: </b>{{film.director}}</div>
+            <div><b>Rating: </b>{{#avg film.rating}}{{/avg}}/10<svg xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" id="star">
+                    <defs>
+                        <linearGradient id="b" x1="-1483.396" x2="-1155.767" y1="1056.787" y2="1056.787"
+                            gradientUnits="userSpaceOnUse" xlink:href="#a"></linearGradient>
+                        <linearGradient id="a">
+                            <stop offset="0" stop-color="#fcd635"></stop>
+                            <stop offset="1" stop-color="#f7a928"></stop>
+                        </linearGradient>
+                    </defs>
+                    <path fill="url(#b)"
+                        d="M-1220 1212.362c-11.656 8.326-86.446-44.452-100.77-44.568-14.324-.115-89.956 51.449-101.476 42.936-11.52-8.513 15.563-95.952 11.247-109.61-4.316-13.658-76.729-69.655-72.193-83.242 4.537-13.587 96.065-14.849 107.721-23.175 11.656-8.325 42.535-94.497 56.86-94.382 14.323.116 43.807 86.775 55.327 95.288 11.52 8.512 103.017 11.252 107.334 24.91 4.316 13.658-68.99 68.479-73.527 82.066-4.536 13.587 21.133 101.451 9.477 109.777z"
+                        color="#000" overflow="visible" transform="matrix(.04574 0 0 .04561 68.85 -40.34)"
+                        style="marker:none"></path>
+                </svg> (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-people-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+                </svg> {{film.rating.length}})
+            </div>
+            <div><b>Thể loại: </b>{{film.genre}}</div>
+            <div><b>Mô tả: </b>{{film.desc}}</div>
+            <div><b>Độ tuổi: </b><strong class="badge badge-danger badge-pill">{{film.age}}+</strong></div>
+            <div><b>Năm sản xuất: </b>{{film.year}}</div>
+            <input type="checkbox" {{#when favorite 'eq' "checked" }}checked{{/when}} id="favorite"
+                name="favorite-checkbox" value="favorite-button" idFilm="{{film.id}}">
+            <label for="favorite" class="container">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="feather feather-heart">
+                    <path
+                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                    </path>
+                </svg>
+                <div class="action">
+                    <span class="option-1">Add to Favorites</span>
+                    <span class="option-2">Added to Favorites</span>
+                </div>
+            </label>
+            {{!-- fill star --}}
+            <defs>
+                <linearGradient id="b" x1="-1483.396" x2="-1155.767" y1="1056.787" y2="1056.787"
+                    gradientUnits="userSpaceOnUse" xlink:href="#a"></linearGradient>
+                <linearGradient id="a">
+                    <stop offset="0" stop-color="#fcd635"></stop>
+                    <stop offset="1" stop-color="#f7a928"></stop>
+                </linearGradient>
+            </defs>
+            {{#if user}}
+            <div style="display: flex; height: 3rem">
+                <div class="rating"><b>Đánh giá của bạn: </b>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20"
+                        height="20">
+                        <path value="1"
+                            d="M-1220 1212.362c-11.656 8.326-86.446-44.452-100.77-44.568-14.324-.115-89.956 51.449-101.476 42.936-11.52-8.513 15.563-95.952 11.247-109.61-4.316-13.658-76.729-69.655-72.193-83.242 4.537-13.587 96.065-14.849 107.721-23.175 11.656-8.325 42.535-94.497 56.86-94.382 14.323.116 43.807 86.775 55.327 95.288 11.52 8.512 103.017 11.252 107.334 24.91 4.316 13.658-68.99 68.479-73.527 82.066-4.536 13.587 21.133 101.451 9.477 109.777z"
+                            color="#000" overflow="visible" transform="matrix(.04574 0 0 .04561 68.85 -40.34)"
+                            style="marker:none" fill="white"></path>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20"
+                        height="20">
+                        <path value="2"
+                            d="M-1220 1212.362c-11.656 8.326-86.446-44.452-100.77-44.568-14.324-.115-89.956 51.449-101.476 42.936-11.52-8.513 15.563-95.952 11.247-109.61-4.316-13.658-76.729-69.655-72.193-83.242 4.537-13.587 96.065-14.849 107.721-23.175 11.656-8.325 42.535-94.497 56.86-94.382 14.323.116 43.807 86.775 55.327 95.288 11.52 8.512 103.017 11.252 107.334 24.91 4.316 13.658-68.99 68.479-73.527 82.066-4.536 13.587 21.133 101.451 9.477 109.777z"
+                            color="#000" overflow="visible" transform="matrix(.04574 0 0 .04561 68.85 -40.34)"
+                            style="marker:none" fill="white"></path>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20"
+                        height="20">
+                        <path value="3"
+                            d="M-1220 1212.362c-11.656 8.326-86.446-44.452-100.77-44.568-14.324-.115-89.956 51.449-101.476 42.936-11.52-8.513 15.563-95.952 11.247-109.61-4.316-13.658-76.729-69.655-72.193-83.242 4.537-13.587 96.065-14.849 107.721-23.175 11.656-8.325 42.535-94.497 56.86-94.382 14.323.116 43.807 86.775 55.327 95.288 11.52 8.512 103.017 11.252 107.334 24.91 4.316 13.658-68.99 68.479-73.527 82.066-4.536 13.587 21.133 101.451 9.477 109.777z"
+                            color="#000" overflow="visible" transform="matrix(.04574 0 0 .04561 68.85 -40.34)"
+                            style="marker:none" fill="white"></path>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20"
+                        height="20">
+                        <path value="4"
+                            d="M-1220 1212.362c-11.656 8.326-86.446-44.452-100.77-44.568-14.324-.115-89.956 51.449-101.476 42.936-11.52-8.513 15.563-95.952 11.247-109.61-4.316-13.658-76.729-69.655-72.193-83.242 4.537-13.587 96.065-14.849 107.721-23.175 11.656-8.325 42.535-94.497 56.86-94.382 14.323.116 43.807 86.775 55.327 95.288 11.52 8.512 103.017 11.252 107.334 24.91 4.316 13.658-68.99 68.479-73.527 82.066-4.536 13.587 21.133 101.451 9.477 109.777z"
+                            color="#000" overflow="visible" transform="matrix(.04574 0 0 .04561 68.85 -40.34)"
+                            style="marker:none" fill="white"></path>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20"
+                        height="20">
+                        <path value="5"
+                            d="M-1220 1212.362c-11.656 8.326-86.446-44.452-100.77-44.568-14.324-.115-89.956 51.449-101.476 42.936-11.52-8.513 15.563-95.952 11.247-109.61-4.316-13.658-76.729-69.655-72.193-83.242 4.537-13.587 96.065-14.849 107.721-23.175 11.656-8.325 42.535-94.497 56.86-94.382 14.323.116 43.807 86.775 55.327 95.288 11.52 8.512 103.017 11.252 107.334 24.91 4.316 13.658-68.99 68.479-73.527 82.066-4.536 13.587 21.133 101.451 9.477 109.777z"
+                            color="#000" overflow="visible" transform="matrix(.04574 0 0 .04561 68.85 -40.34)"
+                            style="marker:none" fill="white"></path>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20"
+                        height="20">
+                        <path value="6"
+                            d="M-1220 1212.362c-11.656 8.326-86.446-44.452-100.77-44.568-14.324-.115-89.956 51.449-101.476 42.936-11.52-8.513 15.563-95.952 11.247-109.61-4.316-13.658-76.729-69.655-72.193-83.242 4.537-13.587 96.065-14.849 107.721-23.175 11.656-8.325 42.535-94.497 56.86-94.382 14.323.116 43.807 86.775 55.327 95.288 11.52 8.512 103.017 11.252 107.334 24.91 4.316 13.658-68.99 68.479-73.527 82.066-4.536 13.587 21.133 101.451 9.477 109.777z"
+                            color="#000" overflow="visible" transform="matrix(.04574 0 0 .04561 68.85 -40.34)"
+                            style="marker:none" fill="white"></path>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20"
+                        height="20">
+                        <path value="7"
+                            d="M-1220 1212.362c-11.656 8.326-86.446-44.452-100.77-44.568-14.324-.115-89.956 51.449-101.476 42.936-11.52-8.513 15.563-95.952 11.247-109.61-4.316-13.658-76.729-69.655-72.193-83.242 4.537-13.587 96.065-14.849 107.721-23.175 11.656-8.325 42.535-94.497 56.86-94.382 14.323.116 43.807 86.775 55.327 95.288 11.52 8.512 103.017 11.252 107.334 24.91 4.316 13.658-68.99 68.479-73.527 82.066-4.536 13.587 21.133 101.451 9.477 109.777z"
+                            color="#000" overflow="visible" transform="matrix(.04574 0 0 .04561 68.85 -40.34)"
+                            style="marker:none" fill="white"></path>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20"
+                        height="20">
+                        <path value="8"
+                            d="M-1220 1212.362c-11.656 8.326-86.446-44.452-100.77-44.568-14.324-.115-89.956 51.449-101.476 42.936-11.52-8.513 15.563-95.952 11.247-109.61-4.316-13.658-76.729-69.655-72.193-83.242 4.537-13.587 96.065-14.849 107.721-23.175 11.656-8.325 42.535-94.497 56.86-94.382 14.323.116 43.807 86.775 55.327 95.288 11.52 8.512 103.017 11.252 107.334 24.91 4.316 13.658-68.99 68.479-73.527 82.066-4.536 13.587 21.133 101.451 9.477 109.777z"
+                            color="#000" overflow="visible" transform="matrix(.04574 0 0 .04561 68.85 -40.34)"
+                            style="marker:none" fill="white"></path>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20"
+                        height="20">
+                        <path value="9"
+                            d="M-1220 1212.362c-11.656 8.326-86.446-44.452-100.77-44.568-14.324-.115-89.956 51.449-101.476 42.936-11.52-8.513 15.563-95.952 11.247-109.61-4.316-13.658-76.729-69.655-72.193-83.242 4.537-13.587 96.065-14.849 107.721-23.175 11.656-8.325 42.535-94.497 56.86-94.382 14.323.116 43.807 86.775 55.327 95.288 11.52 8.512 103.017 11.252 107.334 24.91 4.316 13.658-68.99 68.479-73.527 82.066-4.536 13.587 21.133 101.451 9.477 109.777z"
+                            color="#000" overflow="visible" transform="matrix(.04574 0 0 .04561 68.85 -40.34)"
+                            style="marker:none" fill="white"></path>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20"
+                        height="20">
+                        <path value="10"
+                            d="M-1220 1212.362c-11.656 8.326-86.446-44.452-100.77-44.568-14.324-.115-89.956 51.449-101.476 42.936-11.52-8.513 15.563-95.952 11.247-109.61-4.316-13.658-76.729-69.655-72.193-83.242 4.537-13.587 96.065-14.849 107.721-23.175 11.656-8.325 42.535-94.497 56.86-94.382 14.323.116 43.807 86.775 55.327 95.288 11.52 8.512 103.017 11.252 107.334 24.91 4.316 13.658-68.99 68.479-73.527 82.066-4.536 13.587 21.133 101.451 9.477 109.777z"
+                            color="#000" overflow="visible" transform="matrix(.04574 0 0 .04561 68.85 -40.34)"
+                            style="marker:none" fill="white"></path>
+                    </svg>
+                </div>
+                <button id="submitRating" class="send2server">
+                    <div class="svg-wrapper-1">
+                        <div class="svg-wrapper">
+                            <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0 0h24v24H0z" fill="none"></path>
+                                <path
+                                    d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"
+                                    fill="currentColor"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <span>Đánh giá</span>
+                </button>
+            </div>
+            {{/if}}
+        </div>
+    </div>
+    {{!-- comment --}}
+
+    <div class="comments">
+        <h3>Bình luận: <strong class="badge badge-primary badge-pill" id="amoutCmt">{{film.cmt.length}}</strong></h3>
+        <form action="Javascript:void(0)" id="formCmt">
+
+            <textarea placeholder="Nhập bình luận của bạn" id="contentCmt" required {{#when user 'eq'
+                undefined}}disabled{{/when}} username="{{user.username}}"></textarea>
+            <button class="send2server" type="submit" id="submitCmt" {{#when user 'eq' undefined}}disabled{{/when}}>
+                <div class="svg-wrapper-1">
+                    <div class="svg-wrapper">
+                        <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 0h24v24H0z" fill="none"></path>
+                            <path
+                                d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"
+                                fill="currentColor"></path>
+                        </svg>
+                    </div>
+                </div>
+                <span>Bình luận</span>
+            </button>
+        </form>
+        <div id="space-cmt">
+            {{#each film.cmt}}
+            <div class="comment">
+                <div class="user">{{this.username}}:</div>
+                <div class="content">{{this.content}}</div>
+                <div class="time">{{this.time}}</div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+
+    {{!-- suggest film --}}
+    <div class="title-genre">Phim tương tự</div>
+    <div class="container">
+        {{#each filmSuggest}}
+        <div class="card">
+            <img src="../.{{this.img}}" alt="" class="card-image">
+            <div class="card-description">
+                <p class="text-title">{{this.name}} <strong class="badge badge-danger badge-pill">{{this.age}}+</strong>
+                </p>
+                <p class="text-body">{{#avg this.rating}}{{/avg}}/10<svg xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" id="star">
+                        <defs>
+                            <linearGradient id="b" x1="-1483.396" x2="-1155.767" y1="1056.787" y2="1056.787"
+                                gradientUnits="userSpaceOnUse" xlink:href="#a"></linearGradient>
+                            <linearGradient id="a">
+                                <stop offset="0" stop-color="#fcd635"></stop>
+                                <stop offset="1" stop-color="#f7a928"></stop>
+                            </linearGradient>
+                        </defs>
+                        <path fill="url(#b)"
+                            d="M-1220 1212.362c-11.656 8.326-86.446-44.452-100.77-44.568-14.324-.115-89.956 51.449-101.476 42.936-11.52-8.513 15.563-95.952 11.247-109.61-4.316-13.658-76.729-69.655-72.193-83.242 4.537-13.587 96.065-14.849 107.721-23.175 11.656-8.325 42.535-94.497 56.86-94.382 14.323.116 43.807 86.775 55.327 95.288 11.52 8.512 103.017 11.252 107.334 24.91 4.316 13.658-68.99 68.479-73.527 82.066-4.536 13.587 21.133 101.451 9.477 109.777z"
+                            color="#000" overflow="visible" transform="matrix(.04574 0 0 .04561 68.85 -40.34)"
+                            style="marker:none"></path>
+                    </svg> (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-people-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+                    </svg> {{this.rating.length}})
+                </p>
+                <button class="cta" onclick="getDetail({{this.id}})">
+                    <span>Xem phim</span>
+                    <svg viewBox="0 0 13 10" height="10px" width="15px">
+                        <path d="M1,5 L11,5"></path>
+                        <polyline points="8 1 12 5 8 9"></polyline>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>

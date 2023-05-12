@@ -1,0 +1,152 @@
+{{#if list_users}}
+<table class="table table-hover table-dark" id="table_gener">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">User name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Loại</th>
+            <th scope="col">Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each list_users}}
+        <tr>
+            <th scope="row">{{{this.id}}}</th>
+            <td>{{{this.username}}}</td>
+            <td>{{{this.email}}}</td>
+            <td>{{{this.role}}}</td>
+            <td>
+                <!-- Call to action buttons -->
+                <ul class="list-inline m-0">
+                    <li class="list-inline-item">
+                        <button class="btn btn-success btn-sm rounded-2" type="button" data-toggle="tooltip"
+                            data-placement="top" title="Edit" id="editbutt" iduser="{{this.id}}"
+                            username="{{this.username}}"><i id="editbutt" class="fa fa-edit" iduser="{{this.id}}"
+                                username="{{this.username}}"></i></button>
+                    </li>
+                    <li class="list-inline-item">
+                        <button class="btn btn-danger btn-sm rounded-2" type="button" data-toggle="tooltip"
+                            data-placement="top" title="Delete" id="delbutt" iduser="{{this.id}}"
+                            username="{{this.username}}"><i id="delbutt" class="fa fa-trash" iduser="{{this.id}}"
+                                username="{{this.username}}"></i></button>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        {{/each}}
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <li class="list-inline-item">
+                    <button onclick="addUSer()" class="btn btn-primary btn-md rounded-2" type="button"
+                        data-toggle="tooltip" data-placement="top" title="Tạo người dùng">Thêm</button>
+                </li>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<nav aria-label="...">
+    <ul class="pagination justify-content-center">
+        <li class="page-item disabled">
+            <span class="page-link">Previous</span>
+        </li>
+
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item active">
+            <span class="page-link">
+                2
+                <span class="sr-only">(current)</span>
+            </span>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+
+        <li class="page-item">
+            <a class="page-link" href="#">Next</a>
+        </li>
+    </ul>
+</nav>
+{{/if}}
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Xác nhận xóa?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="contentDeleteuser">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" id="deleteuser">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function notice(type, css, msg) {
+        this.type = type;
+        this.css = css;
+        this.msg = msg;
+    }
+    function showToast(t) {
+        toastr.options.positionClass = t.css;
+        toastr[t.type](t.msg);
+    }
+    toastr.options.positionClass = "toast-top-right";
+    toastr.options.extendedTimeOut = 1000;
+    toastr.options.timeOut = 1000;
+    toastr.options.fadeOut = 250;
+    toastr.options.fadeIn = 250;
+    //delete user
+    $(document).on('click', '#delbutt', function () {
+        let name = $(this).attr('username');
+        let iduser = $(this).attr('iduser');
+        $('#contentDeleteuser').html(`Bạn có chắc muốn xóa người dùng <b>${name}</b> (${iduser})`);
+        $('#deleteuser').attr('iduser', iduser);
+        $('#deleteModal').modal('toggle');
+    })
+<<<<<<< HEAD
+=======
+    //edit user
+>>>>>>> 05b0e80139df2be0813463835149f15273e79855
+    $(document).on('click', '#editbutt', function () {
+        let iduser = $(this).attr('iduser');
+        window.location.replace(`edituser/${iduser}`);
+    })
+<<<<<<< HEAD
+
+=======
+>>>>>>> 05b0e80139df2be0813463835149f15273e79855
+    $(document).on('click', '#deleteuser', function () {
+        let iduser = $('#deleteuser').attr('iduser')
+        $.ajax({
+            url: '/admin/user',
+            type: "DELETE",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            headers: {
+                "X-CSRF-Token": $("#csrf").val(),
+            },
+            data: JSON.stringify({ id: iduser }),
+            success: function (data) {
+                showToast(new notice("success", "toast-top-right", data.msg))
+                window.location.reload()
+            },
+            error: function (data) {
+                showToast(new notice("error", "toast-top-right", data.responseJSON.err))
+            }
+        })
+    })
+
+</script>
