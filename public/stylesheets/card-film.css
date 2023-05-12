@@ -1,0 +1,149 @@
+.carousel-item img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+.card {
+    margin: 20px;
+    height: 254px;
+    width: 190px;
+    position: relative;
+    -webkit-transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+    border-radius: 16px;
+    -webkit-box-shadow: 0 0 10px 4px #6b73a5;
+    box-shadow: 0 0 10px 4px #6b73a5;
+    overflow: hidden;
+}
+
+/*Image*/
+.card-image {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    -webkit-transition: all 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: all 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+/*Description */
+.card-description {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    position: absolute;
+    gap: .5em;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    background-color: #f5f5f5;
+    color: #212121;
+    height: 70%;
+    width: 100%;
+    top: 100%;
+    border-radius: 16px;
+    -webkit-transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: all 1=0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+    padding: 1rem;
+}
+
+/*Text*/
+.text-title {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.text-body {
+    font-size: 0.85rem;
+    line-height: 130%;
+}
+
+
+/* Hover states */
+.card:hover .card-description {
+    -webkit-transform: translateY(-100%);
+    -ms-transform: translateY(-100%);
+    transform: translateY(-100%);
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+@media (min-width: 1200px) {
+
+    .container,
+    .container-lg,
+    .container-md,
+    .container-sm,
+    .container-xl {
+        max-width: 100%;
+    }
+}
+
+/*button*/
+.cta {
+    position: relative;
+    margin: auto;
+    padding: 6px 6px;
+    transition: all 0.2s ease;
+    border: none;
+    background: none;
+}
+
+.cta:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    border-radius: 50px;
+    background: #b1dae7;
+    width: 35px;
+    height: 35px;
+    transition: all 0.3s ease;
+}
+
+.cta span {
+    position: relative;
+    font-family: "Ubuntu", sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #234567;
+}
+
+.cta svg {
+    position: relative;
+    top: 0;
+    margin-left: 10px;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke: #234567;
+    stroke-width: 2;
+    transform: translateX(-5px);
+    transition: all 0.3s ease;
+}
+
+.cta:hover:before {
+    width: 100%;
+    background: #b1dae7;
+}
+
+.cta:hover svg {
+    transform: translateX(0);
+}
+
+.cta:active {
+    transform: scale(0.95);
+}
+/*title genre*/
+.title-genre{
+    margin-top: 20px;
+    color: #f5f5f5;
+    text-align: center;
+    font-size: 2em;
+}

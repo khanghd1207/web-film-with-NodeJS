@@ -1,0 +1,246 @@
+.film-detail {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    place-items: center;
+    align-items: center;
+    height: 70vh;
+    grid-template-rows: auto;
+    /* chiều cao tự động dựa trên nội dung */
+    grid-gap: 20px;
+    margin: 20px;
+}
+
+.film-detail iframe {
+    width: 100%;
+    height: 450px;
+}
+
+.film-detail div {
+    padding: 5px;
+    border-radius: 5px;
+}
+
+#name {
+    font-size: 2em;
+    text-align: center;
+    font-weight: bold;
+    padding: 20px;
+}
+
+/*cmt*/
+.comments {
+    display: grid;
+    padding: 20px;
+    /* background-color: #f1f1f1; */
+}
+
+.comments h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.comments form {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.comments textarea {
+    flex-grow: 1;
+    padding: 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    border: none;
+    background: rgb(198, 199, 210);
+    box-shadow: inset 0 0 0 1px rgb(170, 172, 190);
+}
+
+.comments button {
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.comments button:hover {
+    background-color: #0d8bf2;
+}
+
+.comments .comment {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: rgb(198, 199, 210);
+    color: #666;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.comments .comment .user {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.comments .comment .content {
+    flex-grow: 1;
+}
+
+.comments .comment .time {
+    font-size: 12px;
+    color: #666;
+    margin-left: auto;
+}
+
+.comments .comment:hover {
+    background-color: rgb(170, 172, 190);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.comments form.submitted button {
+    background-color: #ccc;
+    color: #fff;
+    cursor: not-allowed;
+}
+
+.comments form.submitted button:before {
+    content: "Sending...";
+    display: inline-block;
+    animation: pulse 2s ease-in-out infinite;
+    margin-right: 10px;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.2;
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.2;
+    }
+}
+
+.comments .notification {
+    animation: fade-in 0.5s ease;
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 9999;
+}
+
+.comments .notification.fail {
+    background-color: #f44336;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fade-out {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+/*like*/
+label {
+    background-color: rgb(198, 199, 210);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 15px 10px 10px;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 10px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    color: black;
+}
+
+input {
+    display: none;
+}
+
+input:checked+label svg {
+    fill: hsl(0deg 100% 50%);
+    stroke: hsl(0deg 100% 50%);
+    animation: heartButton 1s;
+}
+
+@keyframes heartButton {
+    0% {
+        transform: scale(1);
+    }
+
+    25% {
+        transform: scale(1.3);
+    }
+
+    50% {
+        transform: scale(1);
+    }
+
+    75% {
+        transform: scale(1.3);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+input+label .action {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+}
+
+input+label .action span {
+    grid-column-start: 1;
+    grid-column-end: 1;
+    grid-row-start: 1;
+    grid-row-end: 1;
+    transition: all .5s;
+}
+
+input+label .action span.option-1 {
+    transform: translate(0px, 0%);
+    opacity: 1;
+}
+
+input:checked+label .action span.option-1 {
+    transform: translate(0px, -100%);
+    opacity: 0;
+}
+
+input+label .action span.option-2 {
+    transform: translate(0px, 100%);
+    opacity: 0;
+}
+
+input:checked+label .action span.option-2 {
+    transform: translate(0px, 0%);
+    opacity: 1;
+}
+#space-cmt{
+    overflow: auto;
+    height: auto;
+}
